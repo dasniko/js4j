@@ -1,0 +1,24 @@
+= JavaScript for Java Developers
+Niko Köbler <niko@n-k.de, http://www.n-k.de, https://twitter.com/dasniko[@dasniko]>
+:toc: left
+:linkcss:
+:stylesdir: css/
+:numbered:
+:icons: font
+:imagesdir: images
+:source-highlighter: coderay
+:doctype: book
+:keywords: javascript, java
+:title-logo-image: image:jstraining.png[pdfwidth=4in]
+:pdf-page-size: A4
+
+image::jstraining.png[javascript-training.net, width="800", align="center", link="http://javascript-training.net"]
+
+include::basics.adoc[]
+include::functions.adoc[]
+include::objects.adoc[]
+include::modules.adoc[]
+include::json.adoc[]
+include::other.adoc[]
+include::ecosystem.adoc[]
+include::typescript.adoc[]
