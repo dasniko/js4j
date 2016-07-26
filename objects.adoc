@@ -1,2 +1,199 @@
 == Objects, Prototypes & Inheritence
 
+IMPORTANT: Every object is linked to a prototype object from which it can inherit properties.
+All objects created from object literals are linked to `Object.prototype`, an object that comes standard with JavaScript.
+
+[IMPORTANT]
+====
+[quote, Douglas Crockford, JavaScript: The Good Parts - pp. 22]
+____
+If we try to retrieve a property value from an object, and if the object lacks the property name, then JavaScript attempts to retrieve the property value from the prototype object.
+And if that object is lacking the property, then it goes to _its_ prototype, and so on until the process finally bottoms out with `Object.prototype`.
+____
+====
+
+[source,javascript]
+.object-types.js
+----
+var obj = {};
+
+console.log(obj.toString());
+// -> [object Object]
+
+console.log(obj instanceof Object);
+// -> true
+console.log(typeof Object);
+// -> "function"
+
+console.log(typeof Object.prototype);
+// -> "object"
+
+console.log(typeof Object.prototype.toString);
+// -> "function"
+----
+
+=== Constructor
+
+[source,javascript]
+----
+// create a new person
+function Person(name) {
+  this.name = name;
+}
+
+var john = new Person("John");
+console.log(john.name);
+// -> "John"
+console.log(john.toString());
+// -> [object Object]
+----
+
+* starts with Uppercase character
+* no explicit return statement
+* this references a newly created object
+* called with new operator
+
+NOTE: like in Java...
+
+=== Prototype
+
+[source,javascript]
+----
+// create a new person
+function Person(name) {
+  this.name = name;
+}
+
+var john = new Person("John");
+console.log(john.name);
+// -> "John"
+console.log(john.toString());
+// -> [object Object]
+console.log(john.prototype);
+// -> undefined
+console.log(Object.getPrototypeOf(john));
+// -> Person {}
+
+Person.prototype.getName = function() {
+  return this.name;
+};
+
+var name = john.getName();
+console.log(name);
+// -> "John"
+----
+
+=== Pseudoclassical Inheritance
+
+[source,javascript]
+----
+function Person(name) {
+  this.name = name;
+}
+Person.prototype.getName = function() {
+  return this.name;
+};
+var john = new Person("John");
+
+Object.getPrototypeOf(john) === Person.prototype;
+console.log(john instanceof Person);
+// -> true
+// because:
+Object.getPrototypeOf(john) === Person.prototype;
+
+console.log(john instanceof Object);
+// -> true
+// because:
+Object.getPrototypeOf(Person.prototype) === Object.prototype;
+----
+
+=== Prototype Chain
+
+image::images/prototype_chain.png[width="400"]
+
+=== Pseudoclassical Inheritance
+
+[source,javascript]
+----
+// creates a person
+function Person(name, gender) {
+  this.name = name;
+  this.gender = gender;
+}
+// creates a male person
+function Male(name) {
+  // call the superconstructor
+  Person.call(this, name, "male");
+}
+// returns the name of a male person
+Male.prototype.getName = function() {
+  return "Mr. " + Person.prototype
+                      .getName.call(this);
+};
+var john = new Male("John");
+john.getName(); // "Mr. John"
+john.gender; // "male"
+
+john instanceof Male;   // true
+john instanceof Person; // true
+john instanceof Object; // true
+----
+
+[source,javascript]
+----
+Male.prototype instanceof Person;
+// -> false
+_extends(Male, Person);
+Male.prototype = new Person();
+
+function _extendsSimple(_sub, _super) {
+  _sub.prototype = new _super();
+}
+
+console.log(Male.prototype);
+// -> Person {name: undefined, gender: undefined}
+function _extends(_sub, _super) {
+  var __ = function() {};
+  __.prototype = _super.prototype;
+
+  _sub.prototype = new __();
+
+  _sub.prototype.constructor = _sub;
+}
+----
+
+=== Object.create()
+
+[source,javascript]
+.object-create.js
+----
+var anotherObject = Object.create(anObject);
+
+Object.create = function(o) {
+  var F = function() {};
+  F.prototype = o;
+  return new F();
+};
+
+function _extends(_sub, _super) {
+  _sub.prototype = Object.create(_super.prototype);
+  _sub.prototype.constructor = _sub;
+}
+----
+
+=== Exercise 1
+
+* Write a `Person` "class"
+* Allow constructor with _name, age & gender_
+* Create methods of all functions which operate on Person
+* Create an object of type Person and call methods
+
+=== Exercise 2
+
+* Create a type `Customer` which extends `Person`.
+* Calculate an additional field from the input parameters which indicates the favourite shopping item.
+* Call from the Customer-constructor the Person-constructor.
+* Overwrite the `getName` method.
+* Add a `shop` method which returns the favourite item.
+* Create at least one Customer object and call methods on it.
+

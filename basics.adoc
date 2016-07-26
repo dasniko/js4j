@@ -1,2 +1,393 @@
 == Basics
 
+=== Runtimes
+
+==== Browsers
+
+image::images/browser_logo.png[Browsers, width="400"]
+
+==== Servers
+
+- Node.js
+
+image::images/node_logo.png[Node.js, width="200"]
+
+- Nashorn (Java 8)
+
+image::images/nashorn.jpg[Nashorn, width="200"]
+
+- etc.
+
+==== Databases
+
+eg. MongoDB
+
+image::images/mongodb_logo.jpg[MongoDB, width="200"]
+
+_and others..._
+
+==== "Things"
+
+- SmartPhones
+- SmartTVs
+- Cars
+- etc.
+
+=== Hello World
+
+[source,javascript]
+.hello.js
+----
+console.log('Hello World!');
+----
+
+[source,java]
+.Hello.java
+----
+System.out.println("Hello World!");
+----
+
+=== Data Types
+
+
+==== Object
+
+Java equivalent: `Map<String, Object>`
+
+JavaScript:
+[source,javascript]
+.objects.js
+----
+// create with object literal
+var obj = {};
+
+// including properties
+var obj = {
+  name: "John",
+  age: 42,
+  male: true,
+  "twitter name": "johndoe"
+};
+
+// access properties
+console.log(obj.name);
+// -> "John"
+console.log(obj["twitter name"]);
+// -> "johndoe"
+
+// change property values
+obj.name = "JavaScript";
+console.log(obj.name);
+// -> "JavaScript"
+
+// add properties
+obj.skype = "jdoe";
+console.log(obj.skype);
+// -> "nkoebler"
+
+obj.func = function() {
+  return "function call";
+};
+
+// change type of property
+obj.age: "too old";
+console.log(obj.age);
+// -> "too old"
+
+// delete properties
+delete obj.male;
+console.log(obj.male);
+// -> undefined
+----
+
+==== Array
+
+[source,javascript]
+.arrays.js
+----
+var array = ["a", "b", "c"];
+
+console.log(typeof array);
+// -> "object"
+
+var e = array[2];
+// -> "c"
+
+array[0] = 0;
+// -> [0, "b", "c"]
+
+array.push("z");
+// -> [0, "b", "c", "z"]
+
+array.splice(1, 2);
+// -> [0, "z"];
+
+array.splice(1, 0, "y");
+// -> [0, "y", "z"];
+----
+
+==== String
+
+[source,javascript]
+.strings.js
+----
+var str1 = "a string";
+var str2 = 'also possible with single quotes';
+
+var str = "JavaScript";
+var c1 = str[4];
+// -> "S"
+// typeof -> "string"
+
+var c2 = str.charAt(4);
+// -> "S"
+
+var fname = "John ";
+var lname = "Doe";
+var name = fname + lname;
+// -> "John Doe"
+
+// via Array (kind of StringBuilder in Java)
+var strings = ["JavaScript", "is", "cool"];
+builder.join(" ");
+// -> "JavaScript is cool"
+----
+
+==== Number
+
+[source,javascript]
+.numbers.js
+----
+var int = 1;
+// -> number
+var float = 1.0;
+// -> number
+
+var i = parseInt("100.1");
+// -> 100
+
+var f = parseFloat("100.1");
+// -> 100.1
+----
+
+[source,javascript]
+.guess.js
+----
+var a = 1 / 0;
+// result / type? <1>
+
+var b = 0 / 0;
+// result? / type? <2>
+
+var c = 0 / "a";
+// result? / type? <3>
+----
+<1> `Infinity / number`
+<2> `NaN / number`
+<3> `NaN / number`
+
+==== Boolean
+
+[source,javascript]
+----
+// true / false
+
+var bool = true;
+// typeof -> "boolean"
+----
+
+=== Variables
+
+[source,javascript]
+.variables-initialization.js
+----
+var a = 1;
+
+var b = 2, c;
+// -> b = 2
+// -> c = undefined
+
+var obj = {a: 1, b: 2};
+
+var arr = [1, 2, 3];
+----
+
+[source,javascript]
+.variables-change-type.js
+----
+var x;
+x = 1;
+// -> number
+x = "a";
+// -> string
+x = true;
+// -> boolean
+x = {};
+// -> object
+----
+
+=== Syntax
+
+[source,javascript]
+----
+;
+
+// a comment
+
+/*
+a block comment
+*/
+
+/**
+ * a comment for documentation
+ */
+
+{
+  // a block
+  // but a block is not (yet) scoped!
+}
+----
+
+=== Comparison and Equality (aka: == vs. ===)
+
+Equals Operator (==) vs. Strict Equals Operator (===)
+
+All true:
+[source,javascript]
+.equals.js
+----
+"cat" == "cat";
+1 == true;
+2 != false;
+2 != true;
+0 == false;
+-1 != false;
+-1 != true;
+1 == "1"
+1 == "1.0";
+----
+
+[source,javascript]
+.strict-equals.js
+----
+"cat" === "cat";
+1 !== true;
+1 !== false;
+1 === 1;
+1 !== "1";
+-0 === +0;
+----
+
+[source,javascript]
+.object-comparison.js
+----
+var obj1 = {};      obj1 === obj1;
+var obj2 = {};      obj1 !== obj2;
+var obj3 = obj1;    obj1 === obj3;
+----
+
+=== undefined vs. null
+
+[source,javascript]
+.undefined-is-not-null.js
+----
+undefined == null
+// true
+undefined === null
+// false
+----
+
+[source,javascript]
+.types.js
+----
+var a;
+// typeof -> undefined
+
+var b = null;
+// typeof -> "object"
+----
+
+=== Flow Controls
+
+Like we know from Java:
+
+- `if`
+- `switch`
+- `? :` _(ternary operator)_
+- `for`
+- `while / do...while`
+
+Some more:
+
+`for...in`
+
+[source,javascript]
+.for-in.js
+----
+var numbers = [1, 2, 3, 4, 5];
+var sum = 0;
+for (var n in numbers) {
+  sum += n;
+}
+console.log("Sum: " + sum);
+// result?
+----
+
+[source,javascript]
+.for-in-correct.js
+----
+var numbers = [1, 2, 3, 4, 5];
+var sum = 0;
+for (var i in numbers) {
+  sum += numbers[i];
+}
+console.log("Sum: " + sum);
+// -> 15
+----
+
+[source,javascript]
+.foreach.js
+----
+var numbers = [1, 2, 3, 4, 5];
+var sum = 0;
+numbers.forEach(function(n) {
+  sum += n;
+});
+console.log("Sum: " + sum);
+// -> 15
+----
+
+=== Exceptions
+
+[source,javascript]
+.exceptions.js
+----
+try {
+  throw "Error"; // throw what you want!
+  // or
+  throw new Error("Error"); // kind of RuntimeException
+} catch (e) {
+  // only one catch block!
+  console.error("Caught: " + e);
+} finally {
+  console.log("finally processed");
+}
+----
+
+=== Exercise 1
+
+Create an object with attributes answering the following questions:
+
+- What's your name?
+- When is your birthday?
+- How tall are you?
+- Are you female?
+- What are your hobbies?
+- What's your address?
+
+=== Exercise 2
+
+- Create at least 3 objects with at least 3 attributes.
+- Iterate over an array of these three objects, with both for-options.
+- Concatenate the attributes to a string and print it to the console.
+

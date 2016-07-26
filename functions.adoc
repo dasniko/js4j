@@ -1,2 +1,304 @@
 == Functions
 
+=== First Class Citizens
+
+[source,javascript]
+.first.js
+----
+function myFirstFunction() {
+  console.log("this is great!");
+}
+
+// call
+myFirstFunction();
+// -> this is great!
+----
+
+[source,javascript]
+.second.js
+----
+var secondFunction = function() {
+  console.log("this is also great!");
+};
+
+// call
+secondFunction();
+// -> this is also great!
+----
+
+=== Scopes
+
+[source,javascript]
+.no-scope.js
+----
+// no scoping!
+{
+  var a = 1;
+}
+console.log(a);
+// -> 1
+----
+
+[source,javascript]
+.scope.js
+----
+(function() {
+  var b = 10;
+  console.log("Hey, it's me: " + b);
+})();
+
+console.log(typeof b);
+// -> undefined
+----
+
+*IIFE* - _Immediately-Invoked Function Expression_
+
+[small]#(ES6/ES2015 brings Block-scoped variables!)#
+
+[source,javascript]
+.closure.js
+----
+(function() {
+    var a = 1;
+    console.log(a);
+    // -> 1
+    (function() {
+        var b = "b";
+        console.log(b);
+        // -> "b"
+        console.log(a);
+        // -> 1
+    })();
+    console.log(typeof b);
+    // -> undefined
+})();
+----
+
+=== Strict Mode
+
+[source,javascript]
+.strict.js
+----
+"use strict";
+// ...your code goes here...
+
+function strictFunction() {
+  "use strict";
+  // ...function code...
+}
+----
+
+[source,javascript]
+.global-scope.js
+----
+function foo() {
+  bar = 1;
+  console.log(bar);
+}
+foo();
+// -> 1
+console.log(bar);
+// -> 1
+----
+
+[source,javascript]
+.local-scope.js
+----
+function foo() {
+  var bar = 1;
+  console.log(bar);
+}
+foo();
+// -> 1
+console.log(bar);
+// -> Uncaught ReferenceError: bar is not defined
+----
+
+[source,javascript]
+.strict.js
+----
+"use strict";
+function foo() {
+  bar = 1;
+  // -> Uncaught ReferenceError: bar is not defined
+  console.log(bar);
+}
+foo();
+----
+
+=== Parameters
+
+[source,javascript]
+.unknown.js
+----
+function incr(num) {
+  return num + 1;
+}
+----
+
+[source,javascript]
+.with-jsdoc.js
+----
+/**
+ * Increases the input by 1.
+ *
+ * @param {number} num the input
+ * @returns {number} the by 1 increased input
+ */
+function incr(num) {
+  return num + 1;
+}
+----
+
+[source,javascript]
+.optional-params.js
+----
+// optional parameters
+function next(num) {
+  return ((typeof num !== "undefined") ? num : 0) + 1
+}
+console.log("Next without parameter: " + next());
+// -> "Next without parameter: 1
+----
+
+[source,javascript]
+.variable-param-count.js
+----
+// variable parameter count
+function sum() {
+  var sum = 0;
+  for (var i in arguments) {
+    sum += arguments[i];
+  }
+  return sum;
+}
+
+console.log("Sum: " + sum(1, 2, 3, 4, 5));
+// -> 15
+----
+
+[source,javascript]
+.variable-param-count-with-jsdoc.js
+----
+/**
+ * @param {...number} summands
+ * @return {number} the sum
+ */
+function sum(summands) {
+  var sum = 0;
+  for (var i in arguments) {
+    sum += arguments[i];
+  }
+  return sum;
+}
+----
+
+=== Higher-order Functions
+
+[source,javascript]
+.higher-order.js
+----
+var numbers = [1, 2, 3, 4, 5];
+numbers.forEach(function(n) {
+  console.log(n);
+});
+----
+
+IMPORTANT: Callback-Functions are higher-order functions and derived from the functional programming paradigm. +
+Callback Functions are Closures!
+
+on Arrays (map/reduce/filter):
+
+[source,javascript]
+.higer-order-array-filter.js
+----
+var numbers = [1, 2, 3, 4, 5];
+numbers.filter(function(n) {
+  return n % 2 === 0;
+}).forEach(function(n) {
+  console.log(n);
+});
+// -> 2
+// -> 4
+----
+
+[source,javascript]
+.higer-order-array-mapreduce.js
+----
+var numbers = [1, 2, 3, 4, 5];
+var sum = numbers.map(function(n) {
+  return n * n;
+}).reduce(function(reduced, element) {
+  return reduced + element;
+});
+console.log(sum);
+// -> 55
+----
+
+=== Hoisting
+
+Try this:
+[source,javascript]
+----
+(function() {
+  console.log("before: " + hoisted);
+  var hoisted = 1;
+  console.log("after: " + hoisted);
+})();
+----
+
+The better way:
+[source,javascript]
+----
+(function() {
+  var hoisted;
+  console.log("before: " + hoisted);
+  hoisted = 1;
+  console.log("after: " + hoisted);
+})();
+----
+
+Function hoisting:
+[source,javascript]
+----
+(function() {
+  console.log("inner1: " + inner1);
+  // -> function inner1() {...}
+  inner1();
+  // -> Inner1
+
+  console.log("inner2: " + inner2);
+  // -> undefined
+
+  function inner1() {
+    console.log("Inner1");
+  }
+
+  var inner2 = function() {
+    console.log("Inner2");
+  }
+})();
+----
+
+=== Exercise 1
+
+What is the expected result, the real result and why does this won't work as expected?
+
+[source,javascript]
+----
+for (var i = 0; i < 10; i++) {
+    setTimeout(function() {console.log(i)}, 1);
+}
+----
+
+=== Exercise 2
+
+Re-write the previous function to a working version!
+
+//for (var i = 0; i < 10; i++) {
+//    (function() {
+//        var k = i;
+//        setTimeout(function() {console.log(k)}, 10);
+//    })();
+//}
+
