@@ -1,2 +1,36 @@
 == ECMAScript 2015 (ES6) Language Features
 
+
+NOTE: http://www.ecma-international.org/ecma-262/6.0 +
+http://www.ecma-international.org/ecma-262/7.0
+
+=== Classes & Inheritance
+
+=== Arrow Functions
+
+=== Scopes
+
+=== Template Strings
+
+=== Destructuring
+
+???
+
+=== Static Elements
+
+???
+
+=== Extended Object Literals
+
+???
+
+=== Default- and Rest-Parameter
+
+=== Spread Operator
+
+=== Object.assign() and Spraed Operator (ES8)
+
+=== Modules, Exports and Imports
+
+=== Promises
+

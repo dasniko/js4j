@@ -1,2 +1,4 @@
 == TypeScript
 
+NOTE: http://www.typescriptlang.org
+

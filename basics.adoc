@@ -4,17 +4,17 @@
 
 ==== Browsers
 
-image::images/browser_logo.png[Browsers, width="400"]
+image::browser_logo.png[Browsers, width="400"]
 
 ==== Servers
 
 - Node.js
 
-image::images/node_logo.png[Node.js, width="200"]
+image::node_logo.png[Node.js, width="200"]
 
 - Nashorn (Java 8)
 
-image::images/nashorn.jpg[Nashorn, width="200"]
+image::nashorn.jpg[Nashorn, width="200"]
 
 - etc.
 
@@ -22,7 +22,7 @@ image::images/nashorn.jpg[Nashorn, width="200"]
 
 eg. MongoDB
 
-image::images/mongodb_logo.jpg[MongoDB, width="200"]
+image::mongodb_logo.jpg[MongoDB, width="200"]
 
 _and others..._
 

@@ -1,2 +1,193 @@
 == Other Stuff
 
+=== this
+
+==== Global Scope
+
+[source,javascript]
+.this-globalscope.js
+----
+var person = {name: "Niko"};
+
+console.log(this.person);
+// -> Object {name: "Niko"}
+
+console.log(person === this.person);
+// -> true
+
+// in Browsers
+console.log(this === window);
+// -> true
+
+console.log(this.person === window.person);
+// -> true
+----
+
+==== Constructor
+
+[source,javascript]
+.this-constructor.js
+----
+function Person(name) {
+    this.name = name;
+}
+----
+
+==== Direct Method Calls
+
+[source,javascript]
+.this-direct-method-calls.js
+----
+function Person(name) {
+    this.name = name;
+}
+
+Person.prototype.getName = function() {
+    return this.name;
+}
+
+var john = new Person("John");
+console.log(john.getName());
+// -> "John"
+
+
+var jack = {name: "Jack"};
+jack.getName = john.getName;
+console.log(jack.getName());
+// -> ?
+----
+
+==== Call and Apply
+
+[source,javascript]
+.call-apply.js
+----
+function Person(name) {
+    this.name = name;
+}
+Person.prototype.getName = function() {
+    return this.name;
+}
+var john = new Person("John");
+
+var jack = {name: "Jack"};
+
+console.log(john.getName.call(jack));
+// -> "Jack"
+console.log(john.getName.apply(jack));
+// -> "Jack"
+
+
+function fullName(title, lastName) {
+  return title + " " + this.name + " " + lastName;
+}
+
+var fullName1 = fullName.call(jack, "Mr.", "Johnson");
+console.log(fullName1);
+// -> Mr. Jack Johnson
+
+var fullName2 = fullName.apply(jack, ["Mr.", "Johnson"]);
+console.log(fullName2);
+// -> Mr. Jack Johnson
+----
+
+==== Bind
+
+[source,javascript]
+.bind.js
+----
+var john = {name: "John"};
+
+function fullName(title, lastName) {
+  return title + " " + this.name + " " + lastName;
+}
+
+
+var bound1 = fullName.bind(john);
+
+var fullName1 = bound1("Mr.", "Doe");
+console.log(fullName1);
+// -> Mr. John Doe
+
+
+var bound2 = fullName.bind(john, "Mr.", "Doe");
+
+var fullName2 = bound2();
+console.log(fullName2);
+// -> Mr. John Doe
+----
+
+=== Statics
+
+[source,javascript]
+.statics.js
+----
+function Person(name) {
+    this.name = name;
+}
+
+/**
+ * @type {string}
+ * @static
+ */
+Person.favouriteName = "John";
+
+/**
+ * @returns {string}
+ * @static
+ */
+Person.getFavouriteName = function() {
+    return Person.favouriteName;
+}
+
+console.log(Person.favouriteName);
+// -> "John"
+console.log(Person.getFavouriteName());
+// -> "John";
+----
+
+=== Enumerations
+
+[source,javascript]
+.enums.js
+----
+/**
+ * @enum {string}
+ */
+var Gender = {
+    MALE: "M",
+    FEMALE: "F"
+}
+
+/**
+ * @type {Gender}
+ */
+var g = Gender.MALE;
+console.log(g);
+// -> "M"
+----
+
+=== Overloading
+
+WARNING: No method/function overloading possible.
+
+=== Regular Expressions
+
+[source,javascript]
+.regex.js
+----
+var regexp = /xy+z/;
+// or
+var regexp = new RegExp("xy+z");
+
+// does not fit
+var result = regexp.exec("Some characters xyyyyyy");
+console.log(result);
+// -> null
+
+// fits
+var result = regexp.exec("Some characters xyyyyyz");
+console.log(result);
+// -> ["xyyyyyz", index: 16, input: "Some characters xyyyyyz"]
+----
+

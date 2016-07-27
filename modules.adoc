@@ -1,2 +1,201 @@
 == Module Patterns
 
+=== Modules with Closures
+
+[source,javascript]
+.not-defined.js
+----
+(function() {
+  var Config = {
+    a: 1,
+    b: 2
+  };
+})();
+
+// ReferenceError: Config is not defined
+Config.a;
+----
+
+[source,javascript]
+.module-defined.js
+----
+var module = {};
+(function() {
+  var Config = { a: 1, b: 2 };
+  // export the object
+  module.Config = Config;
+})();
+
+console.log(module.Config.a);
+// -> 1
+----
+
+[source,javascript]
+.person-module.js
+----
+var person = {};
+(function() {
+  // Constructor
+  function Person(name) {
+    this.name = name;
+  }
+  // Factory
+  function CreatePerson(name) {
+    return new Person(name);
+  }
+  // export of the factory method
+  person.CreatePerson = CreatePerson;
+})();
+
+console.log(person.Person);
+// -> undefined
+
+var john = person.CreatePerson("John");
+console.log(john.name);
+// -> "John"
+----
+
+=== Closures
+
+IMPORTANT: An inner function always has access to the vars and parameters of its outer function, even after the outer function has returned. [small]#(Douglas Crockford)#
+
+IMPORTANT: A closure is a special kind of object that combines two things: a function, and the environment in which that function was created. The environment consists of any local variables that were in-scope at the time that the closure was created. [small]#Mozilla Developer Network#
+
+=== Revealing Module Pattern
+
+[source,javascript]
+.rmp.js
+----
+var person = (function() {
+  // Constructor
+  function Person(name) {
+    this.name = name
+  }
+
+  // Factory
+  function Create(name) {
+    return new Person(name);
+  }
+
+  // Export of the factory method
+  return {
+    CreatePerson: Create
+  };
+})();
+----
+
+=== Namespaces
+
+[source,javascript]
+.namespaces.js
+----
+var De = {};
+De.Nk = {};
+De.Nk.Person = {};
+(function() {
+  function Person(name) {
+    this.name = name
+  }
+
+  function Create(name) {
+    return new Person(name);
+  }
+
+  De.Nk.Person.CreatePerson = Create;
+})();
+
+var john = De.Nk.Person.CreatePerson("John");
+console.log(john.name);
+// -> "John"
+
+console.log(De.Nk.Person.Person);
+// -> undefined
+----
+
+=== Import
+
+[source,javascript]
+.import1.js
+----
+var De = {};
+De.Nk = {};
+De.Nk.Person = {};
+(function(person) {
+  function Person(name) {
+    this.name = name
+  }
+
+  function Create(name) {
+    return new Person(name);
+  }
+
+  person.CreatePerson = Create;
+})(De.Nk.Person);
+----
+
+[source,javascript]
+.import2.js
+----
+De.Nk.Main = {};
+(function(main, person) {
+  function Main() {
+    var john = person.CreatePerson("John");
+    console.log(john.name);
+    // -> "John"
+
+    console.log(person.Person);
+    // -> undefined
+  }
+  main.Main = Main;
+})(De.Nk.Main, De.Nk.Person);
+
+De.Nk.Main.Main();
+----
+
+=== AMD
+
+Asynchronous Module Definition
+
+[source,javascript]
+.amd-usage.js
+----
+define(
+['de/nk/person'], function(person) {
+  var john = person.CreatePerson("John");
+});
+----
+
+[source,javascript]
+.amd-definition.js
+----
+define("person", [], function() {
+  // ...
+  return {
+    CreatePerson: Create
+  };
+});
+----
+
+NOTE: http://requirejs.org[RequireJS]
+
+=== CommonJS
+
+[source,javascript]
+.commonjs-usage.js
+----
+var person = require("de/nk/person");
+
+// ...
+
+var niko = person.CreatePerson("Niko");
+----
+
+[source,javascript]
+.commonjs-definition.js
+----
+// ...
+module.exports.CreatePerson = Create;
+----
+
+NOTE: http://www.commonjs.org[CommonJS]
+

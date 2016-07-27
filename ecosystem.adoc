@@ -1,2 +1,89 @@
-== Ecosystem, Testing, Build & Packaging
+== Ecosystem, Build & Packaging
+
+=== Code Checker / Linter
+
+Equivalents to Checkstyle, PMD, Findbugs, etc...
+
+==== JSLint
+
+http://www.jslint.com
+
+by Douglas Crockford
+
+==== JSHint
+
+http://jshint.com
+
+forked by Anton Kovalyov
+
+==== ESLint
+
+http://eslint.org
+
+highly configurable
+
+=== Code Documentation
+
+JSDoc
+
+http://usejsdoc.org
+
+=== Minifying & Uglifying
+
+[source,javascript]
+.source.js
+----
+var person = {};
+(function() {
+  // Constructor
+  function Person(name) {
+    this.name = name;
+  }
+  // Factory
+  function CreatePerson(name) {
+    return new Person(name);
+  }
+  // export of the factory method
+  person.CreatePerson = CreatePerson;
+})();
+----
+
+[source,javascript]
+.minified.js
+----
+var person={};!function(){function n(n){this.name=n}function e(e){return new n(e)}person.CreatePerson=e}();
+----
+
+=== Package Manager
+
+==== NPM
+
+Node Package Manager
+
+_(Maven Repository for Java)_
+
+https://npmjs.org
+
+==== Webpack
+
+Module Bundler
+
+_("Fat Jar" in Java)_
+
+https://webpack.github.io
+
+image::webpack.png[width="800"]
+[small]#Source: Webpack Website#
+
+=== Task Runner
+
+Something like Ant, Maven, Gradle, but only in parts.
+
+==== Grunt
+
+http://gruntjs.com
+
+==== Gulp
+
+http://gulpjs.com
 

@@ -109,7 +109,7 @@ Object.getPrototypeOf(Person.prototype) === Object.prototype;
 
 === Prototype Chain
 
-image::images/prototype_chain.png[width="400"]
+image::prototype_chain.png[width="400"]
 
 === Pseudoclassical Inheritance
 
