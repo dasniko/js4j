@@ -1,4 +1,349 @@
 == TypeScript
 
+[.lead]
+Statically Typed JavaScript
+
+[.lead]
+JavaScript that scales
+
 NOTE: http://www.typescriptlang.org
+
+=== Type Declaration
+
+[source,javascript]
+.javascript.js
+----
+var str1 = "Some String";
+str1 = 10;
+----
+
+[source,javascript]
+.typescript.ts
+----
+var str1: string = "Some String";
+str1 = 10;
+----
+
+==== Compile
+
+[source,bash]
+----
+tsc example.ts
+
+error TS2011: Cannot convert 'number' to 'string'.
+----
+
+=== Types & Interfaces
+
+[source,javascript]
+.javascript.js
+----
+function eatThis(conf) {
+  console.log(conf.name);
+  if (conf.singleLine) {
+    console.log("----");
+  }
+}
+
+eatThis({
+  name: "Niko",
+  singleLine: true
+});
+----
+
+[source,javascript]
+.typescript.ts
+----
+function eatThis(conf: {
+  name: String;
+  singleLine?: boolean
+}) {
+  // code as usual
+}
+----
+
+[source,javascript]
+.interfaces.ts
+----
+interface EatThisConfig {
+  name: String;
+  singleLine?: boolean
+}
+
+function eatThis(conf: EatThisConfig) {
+  // code as usual
+}
+----
+
+[source,javascript]
+.typescript.ts
+----
+eatThis({
+  name: "John",
+  singleLine: 10
+});
+----
+
+[source,bash]
+----
+error TS2082: Supplied parameters do not match any signature of call target:
+Types of property 'singleLine' of types '{ name:string; singeLine: number; }'
+and 'EatThisConfig' are incompatible.
+----
+
+=== Method Interfaces
+
+[source,javascript]
+.method-interface.ts
+----
+interface Eater {
+  eatThis(conf: EatThisConfig): void;
+}
+
+var eater: Eater = {
+  eatThis: function (conf: EatThisConfig) {
+    // code as usual
+  }
+};
+
+eater.eatThis({
+  name: "John",
+  singleLine: true
+});
+----
+
+==== Compiled Code
+
+[source,javascript]
+.method-interface.js
+----
+var eatThis = function(conf) {
+  // code as usual
+};
+----
+
+=== Function Extensions with Lambdas
+
+[source,javascript]
+.wont-work.js
+----
+var sumRobot = {
+  threshold: 4,
+  sum: function(numbers) {
+    var reduceFunc = function(reduced, current) {
+      return current > this.threshold ? (reduced + current) : reduced;
+    };
+    return numbers.reduce(reduceFunc, 0);
+  }
+};
+----
+
+[source,javascript]
+.works.js
+----
+var sumRobot = {
+  threshold: 4,
+  sum: function(numbers) {
+    var that = this;
+    var reduceFunc = function(reduced, current) {
+      return current > that.threshold ? (reduced + current) : reduced;
+    };
+    return numbers.reduce(reduceFunc, 0);
+  }
+};
+----
+
+[source,javascript]
+.lambda.ts
+----
+var reduceFunc = (reduced, current) => {
+  return current > this.threshold ? (reduced + current) : reduced;
+};
+----
+
+[source,javascript]
+.shorter.ts
+----
+var reduceFunc = (reduced, current) => current > this.threshold ? (reduced + current) : reduced;
+----
+
+=== Parameters
+
+[source,javascript]
+.params.ts
+----
+// function call
+var sums = sumRobot.sum([3, 4, 5, 6]);
+
+// optional parameters
+sum: function (numbers?) {...};
+
+// optional params with default value
+sum: function (numbers = []) {...};
+
+// rest parameters
+var sums = sumRobot.sum(3, 4, 5, 6);
+
+sum: function (...numbers) {...};
+----
+
+=== Classes
+
+[source,javascript]
+.person.js
+----
+function Person(name) {
+  this.name = name;
+}
+Person.prototype.getName = function() {
+  return this.name;
+};
+----
+
+[source,javascript]
+.person.ts
+----
+class Person {
+  private name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+  getName(): string {
+    return this.name;
+  }
+}
+----
+
+[source,javascript]
+.person-short.ts
+----
+class Person {
+  constructor(private name: string) { }
+  getName(): string {
+    return this.name;
+  }
+}
+----
+
+=== Inheritance
+
+[source,javascript]
+.person.ts
+----
+class Person {
+  constructor(private name: string,
+              private gender: string) {}
+  getName(): string {
+    return this.name;
+  }
+}
+----
+
+[source,javascript]
+.male.ts
+----
+class Male extends Person {
+  constructor(name: string) {
+    super(name, "male");
+  }
+  getName(): string {
+    return "Mr. " + super.getName();
+  }
+}
+----
+
+=== Statics
+
+[source,javascript]
+.statics.js
+----
+function Person() {}
+Person.getFavouriteName = function() {
+  return Person.favouriteName;
+};
+Person.favouriteName = "John";
+
+console.log(Person.getFavouriteName());
+// -> "John"
+----
+
+[source,javascript]
+.statics.ts
+----
+class Person {
+  private static favouriteName: string = "John";
+  static getFavouriteName(): string {
+    return Person.favouriteName;
+  }
+}
+console.log(Person.getFavouriteName());
+----
+
+=== Generics
+
+[source,javascript]
+.dogs.js
+----
+var dogs = [];
+dogs.push(new Dog("Buddy"));
+
+dogs.forEach(function(dog) {
+  console.log("The dog is called " + dog.name);
+});
+----
+
+[source,javascript]
+.dogs.ts
+----
+var dogs: Array<Dog> = [];
+dogs.push(new Dog("Buddy"));
+
+dogs.forEach(function(dog: Dog) {
+  console.log("The dog is called " + dog.name);
+});
+----
+
+[source,javascript]
+.animals.ts
+----
+ar animals: Array<Animal>;
+var dogs: Array<Dog>;
+var cats: Array<Cat>;
+
+// works (not in Java)
+animals = dogs;
+animals = cats;
+
+// doesn't work
+dogs = cats
+----
+
+=== Modules & Namespaces
+
+[source,javascript]
+.module.ts
+----
+module Person {
+  export class Person {
+    constructor(public name: string) {}
+  }
+  export function Create(name) {
+    return new Person(name);
+  }
+}
+----
+
+[source,javascript]
+.namespace.ts
+----
+module De {
+  export module Nk {
+    export module Person {
+      // the code goes here...
+    }
+  }
+}
+
+var john = De.Nk.Person.Create("John");
+----
 

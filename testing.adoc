@@ -1,7 +1,7 @@
 == Testing
 
 There are testing frameworks, assertion libraries and test runners.
-Following, a free choice of all of them
+Following, a free choice of all of them. There are more available, of course.
 
 === Mocha
 
@@ -35,6 +35,55 @@ $  mocha
   1 passing (6ms)
 ----
 
+==== Async Tests
+
+[source,javascript]
+.async-tests.js
+----
+describe('Person', function() {
+  describe('#save()', function() {
+    it('should save without error', function(done) {
+      var person = new Person('John');
+      person.save(function(err) {
+        if (err) throw err;
+        done();
+      });
+    });
+  });
+});
+----
+
+Simply call the `done` callback, when the async test code is completed.
+
+==== Hooks
+
+[source,javascript]
+.hooks.js
+----
+describe('hooks', function() {
+
+  before(function() {
+    // runs before all tests in this block
+  });
+
+  after(function() {
+    // runs after all tests in this block
+  });
+
+  beforeEach(function() {
+    // runs before each test in this block
+  });
+
+  afterEach(function() {
+    // runs after each test in this block
+  });
+
+  // test cases
+});
+----
+
+Similar to the `@BeforeClass`, `@Before`, `@After` and `@AfterClass` methods in JUnit.
+
 === Jasmine
 
 http://jasmine.github.io
@@ -49,8 +98,42 @@ http://unitjs.com
 
 === Assertion Libraries
 
-* Chai http://chaijs.com
-* Should http://shouldjs.github.io
-* Expect https://github.com/Automattic/expect.js
-* _and many more..._
+The following assertion libraries are only a selection, there are many more.
+
+==== Assert
+
+https://github.com/defunctzombie/commonjs-assert
+
+[source,javascript]
+.assert.js
+----
+assert.equal(5, 5);
+----
+
+==== Should
+
+http://shouldjs.github.io
+
+[source,javascript]
+.should.js
+----
+(5).should.be.exactly(5).and.be.a.Number();
+----
+
+==== Expect
+
+https://github.com/Automattic/expect.js
+
+[source,javascript]
+.expect.js
+----
+expect(5).to.be(5);
+expect(5).to.be.a('number');
+----
+
+==== Chai
+
+http://chaijs.com
+
+The Chai assertion library provides interfaces to the three above mentioned.
 
