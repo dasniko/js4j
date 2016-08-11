@@ -6,31 +6,480 @@ http://www.ecma-international.org/ecma-262/7.0
 
 === Classes & Inheritance
 
-=== Arrow Functions
+[source,javascript]
+.person.js
+----
+function Person(name) {
+  this.name = name;
+}
+Person.prototype.getName = function getName() {
+  return this.name;
+}
+----
+
+[source,javascript]
+.person-es6.js
+----
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+
+  getName() {
+    return this.name;
+  }
+}
+----
+
+[source,javascript]
+.inheritance.js
+----
+class Male(name) extends Person {
+  constructor(name) {
+    super(name);
+  }
+
+  isMale() {
+    return true;
+  }
+}
+----
+
+IMPORTANT: if using inheritance and a `constructor()`, the super class _must_ be called with `super()`!
 
 === Scopes
 
+[source,javascript]
+.variables.js
+----
+var foo = 'bar';
+----
+
+[source,javascript]
+.scoped-variables-es6.js
+----
+let foo = 'bar';
+const FOO = 'BAR';
+----
+
+Variables declared with `let` and `const` in a e.g. _for_-loop, are only valid within this loop. +
+ES5 `var` variables declared in a _for_-loop were also globally available (if _for_ is global).
+
+=== Arrow Functions
+
+[source,javascript]
+.function.js
+----
+var sayHello = function(name) {
+  console.log('Hello ' + name);
+}
+----
+
+[source,javascript]
+.arrow-func.js
+----
+let sayHello = (name) => {
+  console.log('Hello ' + name);
+}
+----
+
+[source,javascript]
+.arrow-short.js
+----
+let sayHello = name => console.log('Hello ' + name);
+----
+
+If only one _parameter_ available, you can ommit the braces for the parameters. +
+If only one _command_ is executed, you can ommit the curly braces for the function block.
+
+==== Lexical `this`
+
+[source,javascript]
+.problem.js
+----
+var car = {
+  speed: 0,
+  accelerate: function() {
+    this.accelerator = setInterval(
+      function() {
+        this.speed++;
+        console.log(this.speed);
+      }, 100
+    );
+  },
+  cruise: function() {
+    clearInterval(this.accelerator);
+    console.log('cruising at ' + this.speed + ' mph');
+  }
+};
+
+car.accelerate();
+setTimeout(function() { car.cruise(); }, 5000);
+----
+
+[source,javascript]
+.es3.js
+----
+var car = {
+  speed: 0,
+  accelerate: function() {
+    var that = this;
+    this.accelerator = setInterval(
+      function() {
+        that.speed++;
+        console.log(that.speed);
+      }, 100
+    );
+  },
+  cruise: function() {
+    clearInterval(this.accelerator);
+    console.log('cruising at ' + this.speed + ' mph');
+  }
+};
+
+car.accelerate();
+setTimeout(function() { car.cruise(); }, 5000);
+----
+
+[source,javascript]
+.es5-bind.js
+----
+var car = {
+  speed: 0,
+  accelerate: function() {
+    this.accelerator = setInterval(
+      (function() {
+        this.speed++;
+        console.log(this.speed);
+      }).bind(this), 100
+    );
+  },
+  cruise: function() {
+    clearInterval(this.accelerator);
+    console.log('cruising at ' + this.speed + ' mph');
+  }
+};
+
+car.accelerate();
+setTimeout(function() { car.cruise(); }, 5000);
+----
+
+[source,javascript]
+.es6.js
+----
+var car = {
+  speed: 0,
+  accelerate: function() {
+    this.accelerator = setInterval(
+      () => {
+        this.speed++;
+        console.log(this.speed);
+      }, 100
+    );
+  },
+  cruise: function() {
+    clearInterval(this.accelerator);
+    console.log('cruising at ' + this.speed + ' mph');
+  }
+};
+
+car.accelerate();
+setTimeout(function() { car.cruise(); }, 5000);
+----
+
+NOTE: With arrow functions, `this` uses lexical scoping. It's value is always "inherited" from the enclosing scope.
+
 === Template Strings
+
+[source,javascript]
+.template-string.js
+----
+let sayHello = name => console.log(`Hello ${name}`);
+----
+
+Template Strings are defined with back-ticks (```). +
+All occurrences of `${...}` will be replaced by the values of the named variable.
 
 === Destructuring
 
-???
+[source,javascript]
+.array-destructuring.js
+----
+const foo = ['one', 'two', 'three'];
 
-=== Static Elements
+// without destructuring
+const one = foo[0];
+const two = foo[1];
+const three = foo[2];
 
-???
+// with desctructuring
+const [one, two, three] = foo;
+----
+
+[source,javascript]
+.object-destructuring.js
+----
+const obj = {a: 42, b: true};
+
+const {a, b} = obj;
+
+// new variable names
+const {a: foo, b: bar} = obj;
+----
+
+[source,javascript]
+.omitting-return-values.js
+----
+const obj = {a: 'one', b: 'two', c: 'three', d: 'four', e: 'five'};
+
+const {a, b} = obj; // just a and b are assigned
+
+const {c, d, ...rest} = obj; // c and d are assigned, all others are in rest
+----
+
+=== Statics
+
+[source,javascript]
+.static-methods.js
+----
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+
+  static convert(obj) {
+    if (obj.name) {
+      return new Person(obj.name);
+    }
+  }
+}
+
+const person = Person.convert({name: 'John'});
+----
+
+IMPORTANT: There are NO static (member-)variables available!
 
 === Extended Object Literals
 
-???
+[source,javascript]
+.extended-object-literals.js
+----
+// es5 way
+function getPerson(name, age, sex) {
+  return {
+    name: name,
+    age: age,
+    sex: sex
+  }
+}
 
-=== Default- and Rest-Parameter
+// extended es6 way
+function getPerson(name, age, sex) {
+  return {
+    name,
+    age,
+    sex
+  }
 
-=== Spread Operator
+  // computed values
+  ['name' + name]: true
 
-=== Object.assign() and Spraed Operator (ES8)
+  // method definition w/o function keyword & colon
+  sayHello() {
+    console.log('hello' + this.name);
+  }
+}
+----
+
+=== Default- and Rest-Parameter, Spread-Operator
+
+[source,javascript]
+.default-values.js
+----
+function getPerson(name, sex = 'male') {
+  return {name, sex};
+}
+
+const person = getPerson('John');
+// {name: 'John', sex: 'male')
+----
+
+[source,javascript]
+.rest-parameter.js
+----
+function join(separater, ...values) {
+  return values.join(separator);
+}
+
+join('-', 'one', 'two', 'three');
+// one-two-three
+----
+
+[source,javascript]
+.spread-operator.js
+----
+function volume(width, length, height) {
+  return width * length * height;
+}
+
+volume(...[3, 7, 2]);
+// 42
+----
+
+=== Object.assign() and Object Spread Operator
+
+Merge (properties of) source objects into the target object / Clone objects
+
+==== Object.assign()
+
+[source,javascript]
+----
+Object.assign(target, source1, source2, ...)
+----
+
+[source,javascript]
+.example.js
+----
+const obj = {one: 1};
+const result = Object.assign(obj, {two: 2});
+console.log(result); // {one: 1, two: 2}
+
+const o1 = {one: 1};
+const o2 = {two: 2};
+const new = Object.assign({}, o1, o2});
+console.log(new); // {one: 1, two: 2}
+----
+
+IMPORTANT: No deep copy!
+
+==== Object Spread Operator
+
+[source,javascript]
+.spread.js
+----
+const obj = {one: 1};
+const result = {...obj, ...{two: 2}};
+console.log(result); // {one: 1, two: 2}
+
+const o1 = {one: 1};
+const o2 = {two: 2};
+const new = {...o1, ...o2};
+console.log(new); // {one: 1, two: 2}
+----
+
+CAUTION: Still a proposal, not yet a standard! _(ES8?)_
 
 === Modules, Exports and Imports
 
+****
+*1 file = 1 module!*
+****
+
+==== Named Exports
+
+[source,javascript]
+.lib.js
+----
+export const sqrt = Math.sqrt;
+
+export function square(x) {
+  return x * x;
+}
+
+export function diag(x, y) {
+  return sqrt(square(x) + square(y));
+}
+----
+
+[source,javascript]
+.main.js
+----
+import {square, diag} from 'lib';
+console.log(square(13)); // 169
+console.log(diag(3, 4)); // 5
+----
+
+or import the complete module
+
+[source,javascript]
+.main.js
+----
+import * as lib from 'lib';
+console.log(lib.square(13)); // 169
+console.log(lib.diag(3, 4)); // 5
+----
+
+==== Single Default Exports
+
+[source,javascript]
+.myFunc.js
+----
+export default function() {...}
+----
+
+[source,javascript]
+.MyClass.js
+----
+export default class {...}
+----
+
+[source,javascript]
+.main.js
+----
+import myFunc from 'myFunc';
+import MyClass from 'MyClass';
+
+myFunc();
+const inst = new MyClass();
+----
+
+IMPORTANT: Only 1 default export per module! +
+No semicolon at the end on default exports (anonymous declarations)!
+
 === Promises
+
+[source,javascript]
+.promises.js
+----
+// Creating a promise wrapper for setTimeout
+function wait(delay = 0) {
+  return new Promise((resolve, reject) => {
+    setTimeout(resolve, delay);
+  });
+}
+
+// Using the promise
+wait(3000)
+  .then(() => {
+    console.log('3 seconds have passed!');
+    return wait(2000);
+  })
+  .then(() => {
+    console.log('5 seconds have passed!');
+    x++; // ReferenceError triggers `catch`
+  })
+  .catch(error => {
+    // output: ReferenceError
+    console.log(error);
+  })
+  .then(() => {
+    // simulate `finally` clause
+    console.log('clean up');
+});
+----
+
+==== API
+
+[source,javascript]
+.api.js
+----
+new Promise((resolve, recject) => {})
+Promise.all(iterable)
+Promise.race(iterable)
+Promise.reject(reason)
+Promise.resolve(value)
+----
+
+
+NOTE: `Promises` in JavaScript are kind of `Futures` in Java.
 

@@ -14,6 +14,10 @@ Niko Köbler <niko@n-k.de, http://www.n-k.de, https://twitter.com/dasniko[@dasni
 
 image::jstraining.png[javascript-training.net, width="800", align="center", link="http://javascript-training.net"]
 
+WARNING: This script is not intended as a full reference of JavaScript language features.
+It is rather a guideline for my "JavaScript for Java Developers" training and features the topics of this course.
+For details, please refer to the official specs.
+
 include::basics.adoc[]
 include::objects.adoc[]
 include::functions.adoc[]
