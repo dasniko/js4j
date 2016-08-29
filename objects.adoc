@@ -120,6 +120,10 @@ function Person(name, gender) {
   this.name = name;
   this.gender = gender;
 }
+Person.prototype.getName = function() {
+  return this.name;
+}
+
 // creates a male person
 function Male(name) {
   // call the superconstructor
@@ -127,24 +131,30 @@ function Male(name) {
 }
 // returns the name of a male person
 Male.prototype.getName = function() {
-  return "Mr. " + Person.prototype
-                      .getName.call(this);
+  return "Mr. " + Person.prototype.getName.call(this);
 };
-var john = new Male("John");
-john.getName(); // "Mr. John"
-john.gender; // "male"
 
-john instanceof Male;   // true
-john instanceof Person; // true
-john instanceof Object; // true
+var john = new Male("John");
+console.log(john.getName()); // "Mr. John"
+console.log(john.gender); // "male"
+
+console.log(john instanceof Male);   // true
+console.log(john instanceof Person); // false !!!
+console.log(john instanceof Object); // true
 ----
+
+IMPORTANT: `john` is not yet an instance of `Person`, because the prototype of `Male` is not yet `Person`. +
+We first have to set the prototype of `Male` with a new instance of `Person`.
 
 [source,javascript]
 ----
-Male.prototype instanceof Person;
-// -> false
+Male.prototype instanceof Person; // -> false
+
 _extends(Male, Person);
 Male.prototype = new Person();
+
+Male.protoype instanceof Person; // -> true
+console.log(john instanceof Person); // now true!
 
 function _extendsSimple(_sub, _super) {
   _sub.prototype = new _super();
@@ -152,6 +162,7 @@ function _extendsSimple(_sub, _super) {
 
 console.log(Male.prototype);
 // -> Person {name: undefined, gender: undefined}
+
 function _extends(_sub, _super) {
   var __ = function() {};
   __.prototype = _super.prototype;

@@ -59,7 +59,7 @@ console.log(john.name);
 
 IMPORTANT: An inner function always has access to the vars and parameters of its outer function, even after the outer function has returned. [small]#(Douglas Crockford)#
 
-IMPORTANT: A closure is a special kind of object that combines two things: a function, and the environment in which that function was created. The environment consists of any local variables that were in-scope at the time that the closure was created. [small]#Mozilla Developer Network#
+IMPORTANT: A closure is a special kind of object that combines two things: a function, and the environment in which that function was created. The environment consists of any local variables that were in-scope at the time that the closure was created. [small]#(Mozilla Developer Network)#
 
 === Revealing Module Pattern
 
