@@ -436,6 +436,14 @@ const inst = new MyClass();
 IMPORTANT: Only 1 default export per module! +
 No semicolon at the end on default exports (anonymous declarations)!
 
+=== Set
+
+_t.b.d._
+
+=== Map
+
+_t.b.d._
+
 === Promises
 
 [source,javascript]
