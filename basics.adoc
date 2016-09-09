@@ -35,16 +35,16 @@ _and others..._
 
 === Hello World
 
-[source,javascript]
-.hello.js
-----
-console.log('Hello World!');
-----
-
 [source,java]
 .Hello.java
 ----
 System.out.println("Hello World!");
+----
+
+[source,javascript]
+.hello.js
+----
+console.log('Hello World!');
 ----
 
 === Data Types
@@ -83,7 +83,7 @@ console.log(obj.name);
 // add properties
 obj.skype = "jdoe";
 console.log(obj.skype);
-// -> "nkoebler"
+// -> "jdoe"
 
 obj.func = function() {
   return "function call";
@@ -149,7 +149,7 @@ var name = fname + lname;
 
 // via Array (kind of StringBuilder in Java)
 var strings = ["JavaScript", "is", "cool"];
-builder.join(" ");
+strings.join(" ");
 // -> "JavaScript is cool"
 ----
 
@@ -195,6 +195,31 @@ var c = 0 / "a";
 var bool = true;
 // typeof -> "boolean"
 ----
+
+Evaluates to `true`:
+[source,javascript]
+----
+true
+1
+'any non empty string'
+{}
+----
+
+Evaluates to `false`:
+[source,javascript]
+----
+false
+0
+undefined
+null
++0
+-0
+NaN
+''
+----
+
+
+
 
 === Variables
 
@@ -286,6 +311,9 @@ var obj2 = {};      obj1 !== obj2;
 var obj3 = obj1;    obj1 === obj3;
 ----
 
+WARNING: Although the new `Object.is()` function seems tom imply you can compare objects, it only compares values!
+
+
 === undefined vs. null
 
 [source,javascript]
@@ -311,7 +339,7 @@ var b = null;
 
 Like we know from Java:
 
-- `if`
+- `if` _(with abstract `ToBoolean` operation)_
 - `switch`
 - `? :` _(ternary operator)_
 - `for`
