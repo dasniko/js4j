@@ -191,3 +191,59 @@ console.log(result);
 // -> ["xyyyyyz", index: 16, input: "Some characters xyyyyyz"]
 ----
 
+=== JSON & JSON Schema
+
+==== JavaScript Object Notation
+
+[source,javascript]
+.object.js
+----
+var obj =
+{
+  "name": "John",
+  "gender": "male",
+  "bday": "1970-01-01T23:42:00",
+  "height": 180,
+  "full_age": true,
+  "hobbies": ["Swim", "Bike", "Run"]
+}
+
+var jsonString = JSON.stringify(obj);
+
+var jsonObj = JSON.parse(jsonString);
+----
+
+IMPORTANT: In JSON, the object properties must always(!) be put in double-quotes!
+
+==== JSON Schema
+
+[source,javascript]
+.schema.js
+----
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Person",
+  "description": "A Person with some attributes",
+  "type": "object",
+  "properties": {
+    "name":   { "type": "string" },
+    "gender": { "enum": ["male", "female"] },
+    "bday":   { "type": "string", "format": "date-time" },
+    "height": {
+      "description": "Height in cm",
+      "type": "integer",
+      "minimum": 1
+    },
+    "full_age": { "type": "boolean", "default": true },
+    "hobbies":  {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true }
+  },
+  "additionalAttributes": false,
+  "required": ["name", "gender"]
+}
+----
+
+NOTE: More information on the inoffical standard: http://json-schema.org/
+
