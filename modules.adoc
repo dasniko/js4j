@@ -187,7 +187,7 @@ var person = require("de/nk/person");
 
 // ...
 
-var niko = person.CreatePerson("Niko");
+var john = person.CreatePerson("John");
 ----
 
 [source,javascript]

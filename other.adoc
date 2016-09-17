@@ -7,10 +7,10 @@
 [source,javascript]
 .this-globalscope.js
 ----
-var person = {name: "Niko"};
+var person = {name: "John"};
 
 console.log(this.person);
-// -> Object {name: "Niko"}
+// -> Object {name: "John"}
 
 console.log(person === this.person);
 // -> true

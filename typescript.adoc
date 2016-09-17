@@ -46,7 +46,7 @@ function eatThis(conf) {
 }
 
 eatThis({
-  name: "Niko",
+  name: "John",
   singleLine: true
 });
 ----
