@@ -653,7 +653,7 @@ let arr = [3, 5, 2, 2, 5, 5];
 let unique = [...new Set(arr)]; // [3, 5, 2]
 ----
 
-NOTE: There's also a `WeakSet` available.
+NOTE: There's also a `WeakSet` available, but without the iterating possibilities and no clear().
 
 === Promises
 
