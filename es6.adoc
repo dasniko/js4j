@@ -265,30 +265,44 @@ IMPORTANT: There are NO static (member-)variables available!
 .extended-object-literals.js
 ----
 // es5 way
-function getPerson(name, age, sex) {
+function getPerson(name, age, gender) {
   return {
     name: name,
     age: age,
-    sex: sex
+    gender: gender
   }
 }
 
 // extended es6 way
-function getPerson(name, age, sex) {
+function getPerson(name, age, gender) {
   return {
+    // shorthand property syntax, if key matches variable name
     name,
     age,
-    sex
-  }
+    gender,
 
-  // computed values
-  ['name' + name]: true
+    // computed values now work with object literals
+    ['name' + name]: true,
 
-  // method definition w/o function keyword & colon
-  sayHello() {
-    console.log('hello' + this.name);
+    // method definition shorthand syntax w/o function keyword & colon
+    sayHello() {
+      console.log('Hello ' + this.name);
+    }
   }
 }
+
+const person = getPerson('John', 42, 'male');
+console.log(person);
+// output: {
+//   name: 'John',
+//   age: 42,
+//   gender: 'male'
+//   nameJohn: true,
+//   sayHello: function()
+// }
+
+person.sayHello()
+// 'Hello John'
 ----
 
 === Default- and Rest-Parameter, Spread-Operator
@@ -296,12 +310,12 @@ function getPerson(name, age, sex) {
 [source,javascript]
 .default-values.js
 ----
-function getPerson(name, sex = 'male') {
-  return {name, sex};
+function getPerson(name, gender = 'male') {
+  return {name, gender};
 }
 
 const person = getPerson('John');
-// {name: 'John', sex: 'male')
+// {name: 'John', gender: 'male')
 ----
 
 [source,javascript]
@@ -440,9 +454,13 @@ No semicolon at the end on default exports (anonymous declarations)!
 
 _t.b.d._
 
+NOTE: There's also a `WeakSet` available.
+
 === Map
 
 _t.b.d._
+
+NOTE: There's also a `WeakMap` available.
 
 === Promises
 
