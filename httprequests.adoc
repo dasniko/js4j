@@ -1,0 +1,117 @@
+== HTTP Requests
+
+=== XMLHttpRequest
+
+[source,javascript]
+.XMLHttpRequest.js
+----
+var req = new XMLHttpRequest();
+var isAsync = true; // default
+
+req.open('GET', '/path/to/resource', isAsync);
+req.setRequestHeader('Accept', 'application/json');
+
+req.onreadystatechange = function() {
+    if (req.readyState == 4) { // 4 == DONE, 3 == LOADING, 2 == HEADER_RECEIVED, 1 == OPENED, 0 == UNSENT
+        if (req.status == 200) {
+            var data = JSON.parse(req.responseText);
+            console.log(data);
+            // ...
+        } else {
+            // do something other...
+            console.error(req.status, req.responseText);
+        }
+    }
+};
+
+req.send();
+----
+
+NOTE: https://developer.mozilla.org/de/docs/Web/API/XMLHttpRequest
+
+=== APIs and Libraries
+
+==== jQuery.ajax()
+
+[source,javascript]
+.jQuery.js
+----
+jQuery.ajax({
+    url: '/path/to/resource',
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        console.log(data);
+    },
+    error: function (xhr, status, err) {
+        console.error(status, err.toString());
+    }
+});
+----
+
+[source,javascript]
+.jQuery-get.js
+----
+jQuery.get({
+    '/path/to/resource',
+    {},
+    function(data) {
+        console.log(data);
+    },
+    'json'
+})
+----
+
+NOTE: http://api.jquery.com/jquery.ajax/
+
+==== fetch() API
+
+[source,javascript]
+.fetch.js
+----
+fetch('/path/to/resource', {
+        method: 'GET',
+        headers: new Headers()
+    })
+    .then(response => {
+        return response.json(); // blob(), text(), formData(), arrayBuffer()
+    })
+    .then(json => {
+        console.log(json);
+    })
+    .catch(error => {
+        console.error(error);
+    })
+----
+
+[source,javascript]
+.fetch-short.js
+----
+fetch('/path/to/resource').then(response => {
+    return response.json().then(json => console.log(json));
+})
+----
+
+WARNING: Only modern browsers, still marked as _experimental_.
+
+NOTE: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+
+==== Axios library
+
+[source,javascript]
+.axios.js
+----
+axios.get('/path/to/resource', {})
+    .then(response => {
+        console.log(response);
+    })
+    .catch(error => {
+        console.error(error);
+    })
+----
+
+- Comprehensive configuration possible
+- Interceptors
+
+NOTE: https://www.npmjs.com/package/axios
+
