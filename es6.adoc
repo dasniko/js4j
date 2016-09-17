@@ -4,6 +4,8 @@
 NOTE: http://www.ecma-international.org/ecma-262/6.0 +
 http://www.ecma-international.org/ecma-262/7.0
 
+TIP: http://kangax.github.io/compat-table/es6
+
 === Classes & Inheritance
 
 [source,javascript]
@@ -450,17 +452,208 @@ const inst = new MyClass();
 IMPORTANT: Only 1 default export per module! +
 No semicolon at the end on default exports (anonymous declarations)!
 
-=== Set
-
-_t.b.d._
-
-NOTE: There's also a `WeakSet` available.
-
 === Map
 
-_t.b.d._
+[source,javascript]
+.map_basics.js
+----
+let map = new Map();
 
-NOTE: There's also a `WeakMap` available.
+map.set('foo', 123);
+map.get('foo')
+// 123
+
+map.has('foo')
+// true
+map.delete('foo')
+// true
+map.has('foo')
+// false
+----
+
+[source,javascript]
+.map_size.js
+----
+let map = new Map();
+map.set('foo', true);
+map.set('bar', false);
+
+map.size
+// 2
+map.clear();
+map.size
+// 0
+----
+
+[source,javascript]
+.map_setup1.js
+----
+let map = new Map([
+    [ 1, 'one' ],
+    [ 2, 'two' ],
+    [ 3, 'three' ]
+]);
+----
+
+[source,javascript]
+.map_setup2.js
+----
+let map = new Map()
+    .set(1, 'one')
+    .set(2, 'two')
+    .set(3, 'three');
+----
+
+[source,javascript]
+.map_keys.js
+----
+let map = new Map();
+
+const KEY1 = {};
+map.set(KEY1, 'hello');
+console.log(map.get(KEY1)); // hello
+
+const KEY2 = {};
+map.set(KEY2, 'world');
+console.log(map.get(KEY2)); // world
+
+map.set(NaN, 'hello world');
+console.log(map.get(NaN)); // hello world
+
+map.get('asdf')
+// undefined
+----
+
+[source,javascript]
+.map_iterating.js
+----
+let map = new Map([
+    [false, 'no'],
+    [true,  'yes'],
+]);
+
+// keys()
+for (let key of map.keys()) {
+    console.log(key);
+}
+// false
+// true
+
+// values()
+for (let value of map.values()) {
+    console.log(value);
+}
+// no
+// yes
+
+// entries()
+for (let entry of map.entries()) {
+    console.log(entry[0], entry[1]);
+}
+// false no
+// true yes
+
+// with destructuring
+for (let [key, value] of map.entries()) {
+    console.log(key, value);
+}
+
+// or even
+for (let [key, value] of map) {
+    console.log(key, value);
+}
+// because entries() is the default way of iterating over a map
+
+// forEach() (mirrored from Array.prototype.forEach, that's why value comes first)
+map.forEach((value, key) => {
+    console.log(key, value);
+}
+false no
+true yes
+----
+
+NOTE: There's also a `WeakMap` available, but without the iterating possibilities and no clear().
+
+=== Set
+
+[source,javascript]
+.set_basics.js
+----
+let set = new Set();
+set.add('red');
+
+set.has('red');
+// true
+set.delete('red');
+// true
+set.has('red');
+// false
+
+set.add('red');
+set.add('green');
+
+set.size
+// 2
+set.clear();
+set.size
+// 0
+----
+
+[source,javascript]
+.set_setup.js
+----
+let set = new Set(['red', 'green', 'blue']);
+// or
+let set = new set().add('red').add('green').add('blue');
+----
+
+[source,javascript]
+.set_values1.js
+----
+let set = new Set();
+
+set.add('foo');
+set.size
+// 1
+
+set.add('foo');
+set.size
+// 1
+----
+
+[source,javascript]
+.set_values2.js
+----
+let set = new Set();
+
+set.add({});
+set.size
+// 1
+
+set.add({});
+set.size
+// 2
+----
+
+[source,javascript]
+.set_iterating.js
+----
+let set = new Set(['red', 'green', 'blue']);
+for (let x of set) {
+    console.log(x);
+}
+// red
+// green
+// blue
+
+let arr = [...set]; // ['red', 'green', 'blue']
+
+// de-duplicating an array
+let arr = [3, 5, 2, 2, 5, 5];
+let unique = [...new Set(arr)]; // [3, 5, 2]
+----
+
+NOTE: There's also a `WeakSet` available.
 
 === Promises
 
