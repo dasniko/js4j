@@ -52,14 +52,14 @@ jQuery.ajax({
 [source,javascript]
 .jQuery-get.js
 ----
-jQuery.get({
+jQuery.get(
     '/path/to/resource',
     {},
     function(data) {
         console.log(data);
     },
     'json'
-})
+)
 ----
 
 NOTE: http://api.jquery.com/jquery.ajax/
