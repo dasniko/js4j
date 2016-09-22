@@ -90,7 +90,7 @@ obj.func = function() {
 };
 
 // change type of property
-obj.age: "too old";
+obj.age = "too old";
 console.log(obj.age);
 // -> "too old"
 

@@ -1,8 +1,8 @@
 == ECMAScript 2015 (ES6) Language Features
 
 
-NOTE: http://www.ecma-international.org/ecma-262/6.0 +
-http://www.ecma-international.org/ecma-262/7.0
+NOTE: http://www.ecma-international.org/ecma-262/6.0 => ES2015 +
+http://www.ecma-international.org/ecma-262/7.0 => ES2106
 
 TIP: http://kangax.github.io/compat-table/es6
 
@@ -36,7 +36,7 @@ class Person {
 [source,javascript]
 .inheritance.js
 ----
-class Male(name) extends Person {
+class Male extends Person {
   constructor(name) {
     super(name);
   }
@@ -323,11 +323,11 @@ const person = getPerson('John');
 [source,javascript]
 .rest-parameter.js
 ----
-function join(separater, ...values) {
+function joinMe(separator, ...values) {
   return values.join(separator);
 }
 
-join('-', 'one', 'two', 'three');
+joinMe('-', 'one', 'two', 'three');
 // one-two-three
 ----
 
@@ -604,7 +604,7 @@ set.size
 ----
 let set = new Set(['red', 'green', 'blue']);
 // or
-let set = new set().add('red').add('green').add('blue');
+let set = new Set().add('red').add('green').add('blue');
 ----
 
 [source,javascript]
