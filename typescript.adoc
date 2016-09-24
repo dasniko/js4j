@@ -306,7 +306,7 @@ dogs.forEach(function(dog: Dog) {
 [source,javascript]
 .animals.ts
 ----
-ar animals: Array<Animal>;
+var animals: Array<Animal>;
 var dogs: Array<Dog>;
 var cats: Array<Cat>;
 
